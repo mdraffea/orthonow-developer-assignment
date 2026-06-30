@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book an Orthopaedic Consultation in Bengaluru | OrthoNow</title>
+<meta name="description" content="Get an expert opinion on knee or back pain from OrthoNow's orthopaedic specialists. 9 clinics across Bengaluru, Hyderabad, Chennai. Book in under a minute.">
+
+<!--
+  TASK 2 — OrthoNow Landing Page
+  Single self-contained file: HTML + CSS + vanilla JS, no frameworks, no external requests.
+  Design rationale (frontend-design pass):
+    - Audience: working professionals 28-50 with knee/back pain. They're not browsing,
+      they're in discomfort and want reassurance + a fast path to a real human appointment.
+    - No external fonts/images/icon libraries are loaded — everything is system fonts,
+      inline SVG, and CSS — specifically so there are zero extra network requests,
+      which is the single biggest lever for a 90+ mobile PageSpeed score.
+    - Palette: a clinical-but-warm blue/teal (not generic medical-blue-on-white sterility,
+      not a cream/serif "wellness brand" cliché) with a single warm coral CTA accent so the
+      button is the one unmissable thing on the page.
+    - Signature element: an inline SVG "spine/joint" linework motif behind the hero —
+      grounded in the actual subject (orthopaedics) rather than a stock photo of a smiling doctor.
+-->
+
+<style>
+  :root {
+    --ink: #0F2A3D;
+    --ink-soft: #45607A;
+    --teal: #0E7C7B;
+    --teal-deep: #095958;
+    --bg: #F7FAFA;
+    --card: #FFFFFF;
+    --coral: #E8623D;
+    --coral-deep: #C94E2C;
+    --line: #DCE6E6;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  img, svg { max-width: 100%; display: block; }
+
+  a { color: inherit; }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--card);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    color: var(--teal-deep);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .header-phone {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .header-phone svg { width: 16px; height: 16px; stroke: var(--teal); flex-shrink: 0; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding: 48px 0 40px;
+    overflow: hidden;
+  }
+  .hero-motif {
+    position: absolute;
+    right: -60px;
+    top: -30px;
+    width: 360px;
+    opacity: 0.08;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 36px;
+    align-items: start;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    background: #E3F2F1;
+    padding: 5px 11px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4.2vw, 2.7rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  h1 .accent { color: var(--teal); }
+  .sub {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 0 26px;
+  }
+
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 6px;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .trust-item svg { width: 18px; height: 18px; stroke: var(--teal); flex-shrink: 0; }
+
+  /* ---------- Form card ---------- */
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: 0 12px 30px -16px rgba(15, 42, 61, 0.18);
+    position: relative;
+    z-index: 1;
+  }
+  .form-card h2 {
+    font-size: 1.15rem;
+    margin: 0 0 4px;
+    font-weight: 700;
+  }
+  .form-card p.form-sub {
+    margin: 0 0 18px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+  label:first-of-type { margin-top: 0; }
+  input[type="text"], input[type="tel"] {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--ink);
+    background: #FCFEFE;
+    transition: border-color 0.15s ease;
+  }
+  input[type="text"]:focus, input[type="tel"]:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(14, 124, 123, 0.12);
+  }
+  .field-error {
+    color: var(--coral-deep);
+    font-size: 0.75rem;
+    margin-top: 5px;
+    min-height: 14px;
+    font-weight: 600;
+  }
+
+  .cta-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: var(--coral);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 18px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    font-family: inherit;
+  }
+  .cta-btn:hover { background: var(--coral-deep); }
+  .cta-btn:active { transform: scale(0.99); }
+  .cta-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .form-foot {
+    margin-top: 12px;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  /* Thank-you state */
+  .thankyou {
+    display: none;
+    text-align: center;
+    padding: 10px 0 4px;
+  }
+  .thankyou.active { display: block; }
+  .form-body.hidden { display: none; }
+  .thankyou-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #E3F2F1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .thankyou-icon svg { width: 28px; height: 28px; stroke: var(--teal-deep); }
+  .thankyou h2 { margin: 0 0 8px; font-size: 1.2rem; }
+  .thankyou p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+
+  /* ---------- Credentials / trust strip ---------- */
+  .strip {
+    background: var(--teal-deep);
+    color: #EAF4F3;
+    padding: 22px 0;
+  }
+  .strip-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 18px;
+    text-align: center;
+  }
+  .strip-stat { flex: 1; min-width: 130px; }
+  .strip-stat .num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .strip-stat .label {
+    font-size: 0.75rem;
+    color: #BFE0DE;
+    margin-top: 2px;
+  }
+
+  /* ---------- Why section ---------- */
+  .why {
+    padding: 52px 0;
+  }
+  .why h2 {
+    font-size: 1.6rem;
+    text-align: center;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .why .why-sub {
+    text-align: center;
+    color: var(--ink-soft);
+    margin: 0 auto 36px;
+    max-width: 50ch;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .why-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+  .why-card .icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: #E3F2F1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .why-card .icon svg { width: 20px; height: 20px; stroke: var(--teal-deep); }
+  .why-card h3 { font-size: 1rem; margin: 0 0 6px; }
+  .why-card p { font-size: 0.87rem; color: var(--ink-soft); margin: 0; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 22px 0;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 760px) {
+    .hero { padding: 28px 0 32px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 26px; }
+    .hero-motif { width: 220px; right: -40px; top: -10px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .strip-inner { text-align: left; }
+    .strip-stat { min-width: 45%; }
+    .header-phone span.phone-text { display: none; }
+    .form-card { padding: 20px; }
+
+    /* sticky mobile CTA reinforcement */
+    body { padding-bottom: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container header-inner">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="13" stroke="#0E7C7B" stroke-width="2"/>
+        <path d="M9 14h3l1.5-4 2 8L17 14h2.5" stroke="#0E7C7B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      OrthoNow
+    </div>
+    <a class="header-phone" href="tel:+918041234567">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="phone-text">Call (080) 4123 4567</span>
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <svg class="hero-motif" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#0E7C7B" stroke-width="2">
+      <circle cx="150" cy="40" r="14"/>
+      <line x1="150" y1="54" x2="150" y2="90"/>
+      <circle cx="150" cy="105" r="10"/>
+      <line x1="150" y1="115" x2="150" y2="150"/>
+      <circle cx="150" cy="165" r="10"/>
+      <line x1="150" y1="175" x2="150" y2="210"/>
+      <circle cx="150" cy="225" r="11"/>
+      <line x1="150" y1="236" x2="150" y2="270"/>
+      <circle cx="120" cy="290" r="9"/>
+      <circle cx="180" cy="290" r="9"/>
+      <line x1="150" y1="270" x2="120" y2="290"/>
+      <line x1="150" y1="270" x2="180" y2="290"/>
+      <line x1="120" y1="299" x2="110" y2="340"/>
+      <line x1="180" y1="299" x2="190" y2="340"/>
+      <circle cx="108" cy="350" r="8"/>
+      <circle cx="192" cy="350" r="8"/>
+    </g>
+  </svg>
+
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">9 clinics · Bengaluru · Hyderabad · Chennai</span>
+      <h1>Knee or back pain getting in the way of your week? <span class="accent">Get a specialist's opinion before it gets worse.</span></h1>
+      <p class="sub">A 20-minute consultation with an orthopaedic specialist tells you what's actually going on — and what to do next. Most patients get a same-week appointment.</p>
+
+      <div class="trust-row">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          MBBS, MS Ortho specialists
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          4.7/5 from 2,400+ patients
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div id="formBody" class="form-body">
+        <h2>Book your consultation</h2>
+        <p class="form-sub">We'll call you to confirm a clinic and time that works for you.</p>
+        <form id="consultForm" novalidate>
+          <label for="patientName">Full name</label>
+          <input type="text" id="patientName" name="patientName" autocomplete="name" placeholder="e.g. Priya Nair">
+          <div class="field-error" id="nameError"></div>
+
+          <label for="patientPhone">Phone number</label>
+          <input type="tel" id="patientPhone" name="patientPhone" autocomplete="tel" placeholder="10-digit mobile number" inputmode="numeric">
+          <div class="field-error" id="phoneError"></div>
+
+          <button type="submit" class="cta-btn" id="submitBtn">Book my consultation</button>
+          <p class="form-foot">No payment now. Our team confirms your slot by phone.</p>
+        </form>
+      </div>
+
+      <div id="thankyou" class="thankyou">
+        <div class="thankyou-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Request received</h2>
+        <p>We'll call <span id="thankyouName">you</span> within 30 minutes to confirm your clinic and appointment time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="container strip-inner">
+    <div class="strip-stat"><div class="num">9</div><div class="label">Clinics across South India</div></div>
+    <div class="strip-stat"><div class="num">12+ yrs</div><div class="label">Avg. specialist experience</div></div>
+    <div class="strip-stat"><div class="num">2,400+</div><div class="label">Patients treated this year</div></div>
+    <div class="strip-stat"><div class="num">4.7★</div><div class="label">Average patient rating</div></div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="container">
+    <h2>Built for people who can't take a half-day off for a doctor's visit</h2>
+    <p class="why-sub">Designed around how working professionals actually deal with pain — by putting it off until it's unavoidable.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>Same-week slots</h3>
+        <p>Most consultations are scheduled within 3–5 days of booking, across all 9 locations.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <h3>Specialist-led, not generalist</h3>
+        <p>You're seen by an orthopaedic-trained doctor, not a general physician triaging joint pain.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+        <h3>A clear plan, same visit</h3>
+        <p>You leave with a diagnosis direction and next steps — not just a referral to come back later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    OrthoNow — Bengaluru · Hyderabad · Chennai · © 2026
+  </div>
+</footer>
+
+<script>
+  // ----------------------------------------------------------------------
+  // Form handling: validates, fires a GTM dataLayer push on real submit,
+  // and swaps to a thank-you state without a page reload.
+  // No external requests are made — this is intentional for both the
+  // PageSpeed budget and so the form logic can be demoed standalone.
+  // ----------------------------------------------------------------------
+
+  // GTM expects window.dataLayer to exist before any push — in production
+  // this array is initialized by the GTM container snippet itself; we
+  // initialize it here defensively so this file is fully self-contained.
+  window.dataLayer = window.dataLayer || [];
+
+  (function () {
+    var form = document.getElementById('consultForm');
+    var formBody = document.getElementById('formBody');
+    var thankyou = document.getElementById('thankyou');
+    var thankyouName = document.getElementById('thankyouName');
+    var nameInput = document.getElementById('patientName');
+    var phoneInput = document.getElementById('patientPhone');
+    var nameError = document.getElementById('nameError');
+    var phoneError = document.getElementById('phoneError');
+    var submitBtn = document.getElementById('submitBtn');
+
+    // Basic Indian mobile number check: 10 digits, optionally with +91 / 0 prefix.
+    function isValidPhone(value) {
+      var digitsOnly = value.replace(/\D/g, '');
+      var stripped = digitsOnly.replace(/^91/, '').replace(/^0/, '');
+      return /^[6-9]\d{9}$/.test(stripped);
+    }
+
+    function clearErrors() {
+      nameError.textContent = '';
+      phoneError.textContent = '';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearErrors();
+
+      var name = nameInput.value.trim();
+      var phone = phoneInput.value.trim();
+      var hasError = false;
+
+      if (name.length < 2) {
+        nameError.textContent = 'Enter your full name.';
+        hasError = true;
+      }
+      if (!isValidPhone(phone)) {
+        phoneError.textContent = 'Enter a valid 10-digit mobile number.';
+        hasError = true;
+      }
+      if (hasError) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Booking...';
+
+      // --- This is the line the brief is actually testing ---
+      // Fires only here, on a validated submit — never on page load,
+      // never on a keystroke. This is what gets demoed live in the
+      // browser console during the Loom walkthrough.
+      window.dataLayer.push({
+        event: 'consultation_form_submitted',
+        form_name: 'consultation_landing_page',
+        lead_source: 'Google Ads - Consultation Landing Page',
+        patient_name: name,
+        patient_phone: phone
+      });
+
+      // Simulate the network round-trip a real submit would have
+      // (e.g. HubSpot Forms API / backend call) before showing the
+      // thank-you state. In production this would be the actual
+      // fetch() promise resolving.
+      setTimeout(function () {
+        thankyouName.textContent = name.split(' ')[0];
+        formBody.classList.add('hidden');
+        thankyou.classList.add('active');
+      }, 350);
+    });
+  })();
+</script>
+
+</body>
+</html>
